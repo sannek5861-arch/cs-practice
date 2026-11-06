@@ -12,6 +12,8 @@ def parse_record(line: str) -> dict:
     
     if not city or not date:
         raise ValueError("Город и дата не могут быть пустыми")
+
+    temp_str = temp_str.replace(",", ".")
     
     try:
         temp = float(temp_str)
