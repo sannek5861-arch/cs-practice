@@ -19,3 +19,43 @@ def parse_record(line: str) -> dict:
         raise ValueError(f"Некорректное значение температуры: '{temp_str}'")
         
     return {"city": city, "temp": temp, "date": date}
+
+def read_valid(lines: list[str]) -> list[dict]:
+    """Разбирает строки журнала, пропуская пустые и негодные строки."""
+    records = []
+    for line in lines:
+        if not line.strip():
+            continue
+        try:
+            record = parse_record(line)
+            records.append(record)
+        except ValueError:
+            pass
+    return records
+
+def average_by_city(records: list[dict]) -> dict:
+    """Считает среднюю температуру по каждому городу, округляя до десятых."""
+    totals = {}
+    counts = {}
+    for r in records:
+        city = r["city"]
+        temp = r["temp"]
+        totals[city] = totals.get(city, 0.0) + temp
+        counts[city] = counts.get(city, 0) + 1
+        
+    averages = {}
+    for city in totals:
+        averages[city] = round(totals[city] / counts[city], 1)
+    return averages
+
+def warmest_city(records: list[dict]) -> str:
+    """Находит самый тёплый город. При равенстве температур выбирает первый по алфавиту."""
+    if not records:
+        return ""
+    avgs = average_by_city(records)
+    if not avgs:
+        return ""
+    
+    # Сортировка по убыванию температуры, затем по возрастанию имени города (алфавит)
+    sorted_cities = sorted(avgs.items(), key=lambda x: (-x[1], x[0]))
+    return sorted_cities[0][0]
