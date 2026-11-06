@@ -18,7 +18,7 @@ def parse_record(line: str) -> dict:
     except ValueError:
         raise ValueError(f"Некорректное значение температуры: '{temp_str}'")
         
-    return {"city": city, "temp": temp, "date": date}
+    return {"city": city, "temperature": temp, "date": date}
 
 def read_valid(lines: list[str]) -> list[dict]:
     """Разбирает строки журнала, пропуская пустые и негодные строки."""
@@ -39,7 +39,7 @@ def average_by_city(records: list[dict]) -> dict:
     counts = {}
     for r in records:
         city = r["city"]
-        temp = r["temp"]
+        temp = r["temperature"]
         totals[city] = totals.get(city, 0.0) + temp
         counts[city] = counts.get(city, 0) + 1
         
