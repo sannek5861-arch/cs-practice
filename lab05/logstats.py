@@ -1,3 +1,5 @@
+from collections import Counter
+
 def parse_event(line: str) -> dict:
 
     stripped = line.strip()
