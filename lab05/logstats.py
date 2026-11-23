@@ -1,26 +1,34 @@
 from collections import Counter
 
+VALID_LEVELS = {"DEBUG", "INFO", "WARNING", "ERROR"}
+
 def parse_event(line: str) -> dict:
+    """Разбирает строку журнала «время уровень сообщение» в словарь.
+    При некорректной строке возбуждает ValueError.
+    """
+    if not isinstance(line, str):
+        raise ValueError("Строка журнала должна быть типом str")
 
-    stripped = line.strip()
-    if not stripped:
-        raise ValueError("Пустая строка")
+    # Убираем перевод строки и крайние пробелы
+    cleaned = line.strip()
+    if not cleaned:
+        raise ValueError("Пустая строка журнала")
 
-    # Строка делится не больше чем на 3 части по пробелам
-    parts = stripped.split(" ", 2)
+    # Делим максимум на 3 части по пробельным символам: время, уровень, сообщение
+    parts = cleaned.split(None, 2)
     if len(parts) != 3:
-        raise ValueError("Строка должна содержать ровно три части: время, уровень и сообщение")
+        raise ValueError("Ожидаются три части: время, уровень и сообщение")
 
     time_str, level, message = parts
-    valid_levels = {"DEBUG", "INFO", "WARNING", "ERROR"}
+    message = message.strip()
 
-    if level not in valid_levels:
-        raise ValueError(f"Неизвестный или отсутствующий уровень логирования: '{level}'")
+    if not time_str or level not in VALID_LEVELS or not message:
+        raise ValueError("Некорректное время, уровень или пустое сообщение")
 
     return {
         "time": time_str,
         "level": level,
-        "message": message
+        "message": message,
     }
 
 def count_levels(lines) -> dict:
