@@ -21,7 +21,7 @@ def main():
             counts = count_levels(f)
             
         # Общее число разобранных строк = сумма всех успешных уровней (без BROKEN)
-        total_parsed = sum(v for k, v in counts.items() if k != "BROKEN")
+        total_lines = sum(counts.values())
         error_count = counts.get("ERROR", 0)
         broken_count = counts.get("BROKEN", 0)
     except FileNotFoundError:
