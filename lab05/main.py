@@ -11,7 +11,7 @@ def main():
     if not path:
         return
 
-    total_parsed = 0
+    total_lines = 0
     error_count = 0
     broken_count = 0
 
@@ -29,7 +29,7 @@ def main():
         return
 
     # Печать трёх требуемых чисел в stdout
-    print(total_parsed)
+    print(total_lines)
     print(error_count)
     print(broken_count)
 
